@@ -1,14 +1,15 @@
 body {
   background-color: #fff;
 }
+
 .container {
   width: 600px;
   height: auto;
   margin: 5% auto;
   background-color: #fff;
-  -webkit-box-shadow: 0px 0px 33px 6px rgba(0, 0, 0, 0.24);
-  -moz-box-shadow: 0px 0px 33px 6px rgba(0, 0, 0, 0.24);
-  box-shadow: 0px 0px 33px 6px rgba(0, 0, 0, 0.24);
+  -webkit-box-shadow: 0 0 33px 6px rgba(0, 0, 0, 0.24);
+  -moz-box-shadow: 0 0 33px 6px rgba(0, 0, 0, 0.24);
+  box-shadow: 0 0 33px 6px rgba(0, 0, 0, 0.24);
 }
 
 h1 {
@@ -23,12 +24,11 @@ h1 {
   justify-content: space-between;
   width: 100%;
   border-bottom: 1px solid rgb(80, 80, 78, 0.1);
-  /* padding: -20px auto auto auto; */
 }
+
 #new-item-input {
   border: none;
   width: 88%;
-  /* margin-top: -0.5rem; */
   height: 2rem;
 }
 
@@ -50,6 +50,10 @@ h1 {
   list-style-type: none;
   margin-left: -2rem;
   font-size: 16px;
+}
+
+li:first-child {
+  margin-top: -1.2rem;
 }
 
 #todo-list li {
@@ -79,10 +83,6 @@ h1 {
   cursor: pointer;
 }
 
-li:first-child {
-  margin-top: -1.2rem;
-}
-
 .task-description {
-    padding-left: 0.3rem;
+  padding-left: 0.3rem;
 }

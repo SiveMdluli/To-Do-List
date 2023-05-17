@@ -1,5 +1,6 @@
-import _ from "lodash";
+// import _ from 'lodash';
 import { clearCompletedButton } from './ui.js';
+
 const todos = JSON.parse(localStorage.getItem('todos')) || [];
 
 const todoList = document.getElementById('todo-list');
@@ -7,7 +8,7 @@ const todoList = document.getElementById('todo-list');
 const renderTodoList = () => {
   todoList.innerHTML = '';
 
-  todos.forEach(todo => {
+  todos.forEach((todo) => {
     const taskListItem = document.createElement('li');
     taskListItem.classList.add('task-list-item');
 
@@ -42,7 +43,7 @@ const renderTodoList = () => {
     todoList.appendChild(taskListItem);
   });
 
-//   clearCompletedButton.style.display = todos.some(todo => todo.completed) ? 'block' : 'none';
+  //   clearCompletedButton.style.display = todos.some(todo => todo.completed) ? 'block' : 'none';
   clearCompletedButton.style.display = 'block';
 
   // Store the updated todos array in localStorage
