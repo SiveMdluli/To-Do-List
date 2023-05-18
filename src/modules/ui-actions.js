@@ -8,9 +8,9 @@ const addItem = (todos, input, render) => {
   }
 
   const newTodo = {
-    id: todos.length + 1,
-    text: newItemText,
+    description: newItemText,
     completed: false,
+    index: todos.length,
   };
 
   todos.push(newTodo);

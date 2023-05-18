@@ -1,7 +1,23 @@
 // import _ from 'lodash';
 import { clearCompletedButton } from './ui.js';
 
-const todos = JSON.parse(localStorage.getItem('todos')) || [];
+const todos = [
+  {
+    description: 'Create a dance style to scynchonously jam to the sound of a washing machine.',
+    completed: false,
+    index: 0,
+  },
+  {
+    description: 'Program a script that can translate thoughts into code.',
+    completed: true,
+    index: 1,
+  },
+  {
+    description: 'Create an app that generates random programming pickup lines.',
+    completed: false,
+    index: 2,
+  },
+];
 
 const todoList = document.getElementById('todo-list');
 
@@ -9,8 +25,8 @@ const renderTodoList = () => {
   todoList.innerHTML = '';
 
   todos.forEach((todo) => {
-    const taskListItem = document.createElement('li');
-    taskListItem.classList.add('task-list-item');
+    const todosListItem = document.createElement('li');
+    todosListItem.classList.add('task-list-item');
 
     const checkboxWrapper = document.createElement('label');
     checkboxWrapper.classList.add('checkbox-wrapper');
@@ -29,7 +45,7 @@ const renderTodoList = () => {
 
     const taskDescription = document.createElement('span');
     taskDescription.classList.add('task-description');
-    taskDescription.textContent = todo.text;
+    taskDescription.textContent = todo.description;
     if (todo.completed) {
       taskDescription.classList.add('completed');
     }
@@ -37,13 +53,12 @@ const renderTodoList = () => {
     icon.classList.add('fas', 'fa-ellipsis-v');
     icon.style.color = '#c8ccd0';
 
-    taskListItem.appendChild(checkboxWrapper);
-    taskListItem.appendChild(taskDescription);
-    taskListItem.appendChild(icon);
-    todoList.appendChild(taskListItem);
+    todosListItem.appendChild(checkboxWrapper);
+    todosListItem.appendChild(taskDescription);
+    todosListItem.appendChild(icon);
+    todoList.appendChild(todosListItem);
   });
 
-  //   clearCompletedButton.style.display = todos.some(todo => todo.completed) ? 'block' : 'none';
   clearCompletedButton.style.display = 'block';
 
   localStorage.setItem('todos', JSON.stringify(todos));
