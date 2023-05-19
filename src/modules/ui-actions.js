@@ -1,7 +1,7 @@
 const addItem = (todos, input, render) => {
   const newItemText = input.value.trim();
 
-  if (newItemText === "") {
+  if (newItemText === '') {
     return;
   }
 
@@ -12,13 +12,13 @@ const addItem = (todos, input, render) => {
   };
 
   todos.push(newTodo);
-  input.value = "";
+  input.value = '';
   render();
 };
 
 const clearCompleted = (todos) => {
   const updatedTodos = todos.filter((todo) => !todo.completed);
-  localStorage.setItem("todos", JSON.stringify(updatedTodos));
+  localStorage.setItem('todos', JSON.stringify(updatedTodos));
   return updatedTodos;
 };
 
