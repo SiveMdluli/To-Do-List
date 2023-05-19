@@ -46,12 +46,8 @@ const renderTodoList = () => {
     checkbox.addEventListener("change", () => {
       todo.completed = checkbox.checked;
       localStorage.setItem("todos", JSON.stringify(todos));
-      const updatedTodos = clearCompleted(todos);
-      if (updatedTodos.some((todo) => todo.completed)) {
-        clearCompletedButton.style.display = "none";
-      } else {
-        clearCompletedButton.style.display = "block";
-      }
+      const hasCompletedTodos = todos.some((todo) => todo.completed);
+      clearCompletedButton.style.display = hasCompletedTodos ? "block" : "none";
     });
 
     todosListItem.appendChild(checkboxWrapper);
