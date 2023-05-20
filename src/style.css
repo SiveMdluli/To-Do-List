@@ -86,3 +86,8 @@ li:first-child {
 .task-description {
   padding-left: 0.3rem;
 }
+
+.plus-on-edit {
+  font-weight: 600;
+  font-size: 1.3rem;
+}
