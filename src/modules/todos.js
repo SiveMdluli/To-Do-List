@@ -104,7 +104,7 @@ const renderTodoList = () => {
       addItemButton.addEventListener('click', saveItem);
     }
 
-    const deleteTodo = (todo, e) => {
+    const deleteTodo = (todo) => {
       const todoIndex = todos.indexOf(todo);
       todos.splice(todoIndex, 1);
       localStorage.setItem('todos', JSON.stringify(todos));
