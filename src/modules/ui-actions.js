@@ -16,10 +16,17 @@ const addItem = (todos, input, render) => {
   render();
 };
 
-const clearCompleted = (todos) => {
-  const updatedTodos = todos.filter((todo) => !todo.completed);
-  localStorage.setItem('todos', JSON.stringify(updatedTodos));
-  return updatedTodos;
-};
+// const clearCompleted = (todos) => {
+//   const updatedTodos = todos.filter((todo) => !todo.completed);
+//   localStorage.setItem('todos', JSON.stringify(updatedTodos));
+//   return updatedTodos;
+// };
+
+const clearCompleted = (todos) => todos.filter((todo) => {
+  if (todo && todo.completed) {
+    return false;
+  }
+  return true;
+});
 
 export { addItem, clearCompleted };

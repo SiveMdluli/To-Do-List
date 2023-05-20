@@ -12,16 +12,17 @@ const renderTodoList = () => {
 
   const updatedTodos = clearCompleted(todos);
 
-  updatedTodos.forEach((todo) => {
+  updatedTodos.forEach((todo, index) => {
     const todosListItem = document.createElement('li');
     todosListItem.classList.add('task-list-item');
+    todosListItem.setAttribute('draggable', true);
+    todosListItem.dataset.index = index;
 
     const checkboxWrapper = document.createElement('label');
     checkboxWrapper.classList.add('checkbox-wrapper');
 
     const checkbox = document.createElement('input');
     checkbox.classList.add('checkbox');
-
     checkbox.type = 'checkbox';
     checkbox.checked = todo.completed;
 
@@ -43,14 +44,13 @@ const renderTodoList = () => {
     icon.classList.add('fas', 'fa-ellipsis-v');
     icon.style.color = '#c8ccd0';
 
-    // Add an event lisnter to the icon
     icon.addEventListener('click', (e) => {
-      showOptionsMenu(e);
+      showOptionsMenu(e, index);
     });
 
-    function showOptionsMenu(e) {
+    function showOptionsMenu(e, index) {
       const optionsMenus = document.querySelectorAll('.options-menu');
-      // Hide all other options menus
+
       optionsMenus.forEach((menu) => {
         if (menu !== e.target.querySelector('.options-menu')) {
           menu.remove();
@@ -63,7 +63,7 @@ const renderTodoList = () => {
       const editButton = document.createElement('button');
       editButton.textContent = 'Edit';
       editButton.addEventListener('click', () => {
-        editTodo(todo);
+        editTodo(todo, index);
         hideOptionsMenu();
       });
 
@@ -86,27 +86,35 @@ const renderTodoList = () => {
       }
     }
 
-    function editTodo(todo) {
-      const todoIndex = todo.index;
-      input.value = todo.description;
-      addItemButton.innerText = 'Save';
+    function editTodo(todo, index) {
+      if (todo !== undefined) {
+        input.value = todo.description;
 
-      const saveItem = () => {
-        todos[todoIndex].description = input.value;
-        localStorage.setItem('todos', JSON.stringify(todos));
-        renderTodoList();
-        hideOptionsMenu();
-        addItemButton.innerText = '+';
-        addItemButton.classList.add('plus-on-edit');
-        addItemButton.removeEventListener('click', saveItem);
-      };
+        const saveItem = () => {
+          if (input.value !== '') {
+            // Updating the description of the existing todo at index
+            todos[index].description = input.value;
+          } else {
+            // Here I remove the todo at index
+            todos.splice(index, 1);
+          }
 
-      addItemButton.addEventListener('click', saveItem);
+          localStorage.setItem('todos', JSON.stringify(todos));
+          renderTodoList();
+          hideOptionsMenu();
+          addItemButton.innerText = '+';
+          addItemButton.classList.add('plus-on-edit');
+          addItemButton.removeEventListener('click', saveItem);
+        };
+
+        addItemButton.addEventListener('click', saveItem);
+        todosListItem.classList.remove('edited');
+      } else {
+
+      }
     }
 
-    const deleteTodo = (todo) => {
-      const todoIndex = todos.indexOf(todo);
-      todos.splice(todoIndex, 1);
+    const deleteTodo = () => {
       localStorage.setItem('todos', JSON.stringify(todos));
       renderTodoList();
     };
@@ -118,13 +126,46 @@ const renderTodoList = () => {
       clearCompletedButton.style.display = hasCompletedTodos ? 'block' : 'none';
     });
 
+    todosListItem.addEventListener('dragstart', (event) => {
+      event.dataTransfer.clearData();
+      event.dataTransfer.setData('text/plain', event.target.dataset.index);
+    });
+
+    todosListItem.addEventListener('dragend', (event) => {
+      event.preventDefault();
+      const updatedListItems = document.querySelectorAll('.task-list-item');
+      updatedListItems.forEach((listItem) => listItem.classList.remove('dragging'));
+    });
+
+    todosListItem.addEventListener('dragover', (event) => {
+      event.preventDefault();
+    });
+
+    todosListItem.addEventListener('drop', (event) => {
+      event.preventDefault();
+      const dropIndex = event.target.dataset.index;
+      const dragIndex = event.dataTransfer.getData('text/plain');
+      if (todos[dropIndex] !== undefined) {
+        const dropTodo = todos[dropIndex];
+        todos[dropIndex] = todos[dragIndex];
+        todos[dragIndex] = dropTodo;
+
+        // Update the data-index attribute of the affected todosListItem elements
+        const updatedListItems = document.querySelectorAll('.task-list-item');
+        updatedListItems[dragIndex].dataset.index = dropIndex;
+        updatedListItems[dropIndex].dataset.index = dragIndex;
+
+        renderTodoList();
+      }
+    });
+
     todosListItem.appendChild(checkboxWrapper);
     todosListItem.appendChild(taskDescription);
     todosListItem.appendChild(icon);
     todoList.appendChild(todosListItem);
   });
 
-  clearCompletedButton.style.display = updatedTodos.some((todo) => todo.completed) ? 'none' : 'block';
+  clearCompletedButton.style.display = updatedTodos.some((todo) => todo.completed) ? 'block' : 'none';
   localStorage.setItem('todos', JSON.stringify(updatedTodos));
 
   addItemButton.addEventListener('click', () => {
